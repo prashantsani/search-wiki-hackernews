@@ -20,15 +20,12 @@ class SearchApp extends Component {
     if (e.keyCode === 13) {
         e.preventDefault();
 
+        var val = e.target.value;
+
         this.setState({
-          query: e.target.value
+          query: val
         }, () => {
-          if (this.state.query && this.state.query.length > 1) {
-            if (this.state.query.length % 2 === 0) {
-              this.searchWiki(this.state.query)
-            }
-          } else if (!this.state.query) {
-          }
+          this.searchWiki(val)
         })
 
         return false;
@@ -38,9 +35,9 @@ class SearchApp extends Component {
   searchWiki = (query) =>{
     fetch(`https://en.wikipedia.org/w/api.php?action=opensearch&format=json&search=${query}&origin=*`)
       .then(res => res.json())
+      .then(response => {console.log(response); return response})
       .then(
         (result) => {
-          console.log(result)
           this.setState({
             wikiResults: result
           });
@@ -56,7 +53,7 @@ class SearchApp extends Component {
   render() {
     return (
       <React.Fragment>
-        <Form onInputKeyDown={this.onInputKeyDown} searchWiki={this.searchWiki} />
+        <Form onInputKeyDown={this.onInputKeyDown} searchWiki={this.searchWiki}/>
         <SearchResults results={this.state.wikiResults}/>
       </React.Fragment>
     );
