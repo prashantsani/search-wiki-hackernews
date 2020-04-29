@@ -1,17 +1,18 @@
-import React from 'react'
+import React from 'react';
+import SearchListItem from './SearchListItem.js';
 
 const SearchResults = (props) => {
-  if(!props.results) {
+  console.log('res'+props.results)
+  if(props.results[0]===undefined) {
     return false
   }
 
-  var options;
+  var options =[];
   if(props.results[0]!== undefined || props.results[0]!==[]){
-    options = props.results[0].map(r => (
-      <li>
-        {r.name}
-      </li>
-    ))
+    for(let a = 0; a< props.results[1].length; a++){
+      console.log(props.results[1][a])
+      options.push(<SearchListItem url={props.results[3][a]} title={props.results[1][a]}/>)
+    }
   }else if(props.results[0]!==[]){
     options = 'No Results to Show'
   }

@@ -18,14 +18,14 @@ class SearchApp extends Component {
   onInputKeyDown = (e) =>{
     // Do a search Query if user presses ENTER key on keyboard
     if (e.keyCode === 13) {
-        e.preventDefault()
-        
+        e.preventDefault();
+
         this.setState({
-          query: this.search.value
+          query: e.target.value
         }, () => {
           if (this.state.query && this.state.query.length > 1) {
             if (this.state.query.length % 2 === 0) {
-              this.searchWiki()
+              this.searchWiki(this.state.query)
             }
           } else if (!this.state.query) {
           }
@@ -35,13 +35,12 @@ class SearchApp extends Component {
     }
   }
 
-  searchWiki = (e) =>{
-    
-
-    fetch(`https://en.wikipedia.org/w/api.php?action=opensearch&format=json&search=${this.props.query}halodoc&origin=*`)
+  searchWiki = (query) =>{
+    fetch(`https://en.wikipedia.org/w/api.php?action=opensearch&format=json&search=${query}&origin=*`)
       .then(res => res.json())
       .then(
         (result) => {
+          console.log(result)
           this.setState({
             wikiResults: result
           });
@@ -57,8 +56,8 @@ class SearchApp extends Component {
   render() {
     return (
       <React.Fragment>
-        <Form onInputKeyDown={this.onInputKeyDown} searchQuery={this.searchQuery} />
-        <SearchResults />
+        <Form onInputKeyDown={this.onInputKeyDown} searchWiki={this.searchWiki} />
+        <SearchResults results={this.state.wikiResults}/>
       </React.Fragment>
     );
   }
