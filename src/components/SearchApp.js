@@ -6,41 +6,52 @@ class SearchApp extends Component {
   constructor(){
     super();
     this.state = {
-      searchResults:[
+      query: '',
+      wikiResults:[],
+      wikiError: null,
 
-      ],
-      error: null
+      hackerNewsResults:[],
+      hackerNewsError: null
     };
   }
 
   onInputKeyDown = (e) =>{
     // Do a search Query if user presses ENTER key on keyboard
-    if (e.keyCode == 13) {
+    if (e.keyCode === 13) {
         e.preventDefault()
         
-        this.searchQuery()
+        this.setState({
+          query: this.search.value
+        }, () => {
+          if (this.state.query && this.state.query.length > 1) {
+            if (this.state.query.length % 2 === 0) {
+              this.searchWiki()
+            }
+          } else if (!this.state.query) {
+          }
+        })
 
         return false;
     }
   }
 
-  searchQuery = (e) =>{
+  searchWiki = (e) =>{
     
 
-    // fetch(`https://en.wikipedia.org/w/api.php?action=opensearch&format=json&search=${searchQuery}halodoc&origin=*`)
-    //   .then(res => res.json())
-    //   .then(
-    //     (result) => {
-    //       this.setState({
-    //         searchResults = result
-    //       });
-    //     },
-    //     (error) => {
-    //       this.setState({
-    //         error
-    //       });
-    //     }
-    //   )
+    fetch(`https://en.wikipedia.org/w/api.php?action=opensearch&format=json&search=${this.props.query}halodoc&origin=*`)
+      .then(res => res.json())
+      .then(
+        (result) => {
+          this.setState({
+            wikiResults: result
+          });
+        },
+        (error) => {
+          this.setState({
+            error
+          });
+        }
+      )
   }
 
   render() {
@@ -54,3 +65,4 @@ class SearchApp extends Component {
 }
 
 export default SearchApp;
+
