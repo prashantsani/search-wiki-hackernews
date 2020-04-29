@@ -10,8 +10,6 @@ class Form extends Component {
   searchQuery = (e) =>{
     e.preventDefault();
     
-    console.log(e)
-    
     this.props.searchWiki(this.searchInput.current.value)
 
     return false
