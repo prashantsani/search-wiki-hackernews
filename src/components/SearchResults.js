@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 
-class Card extends Component {
+class SearchResults extends Component {
   render() {
     return (
-      <div className="card text-center" itemScope itemType="http://schema.org/Book">
-        <a href={this.props.url}>
+      <div className="card text-center">
+        {/* <a href={this.props.url}>
         	<h4 className="title" itemProp="name">{this.props.title}</h4>
-        </a>
+        </a> */}
       </div>
     );
   }
 }
 
-export default Card;
+export default SearchResults;
